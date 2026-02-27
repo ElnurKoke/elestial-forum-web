@@ -1,0 +1,39 @@
+{
+    "port": ":8080",
+    "db": {
+        "dsn": "forum.db?_foreign_keys=1",
+        "driver": "sqlite3"
+    },
+    "smtp": {
+        "from": "your-email@example.com",
+        "password": "your-smtp-password",
+        "host": "smtp.gmail.com",
+        "port": "587"
+    },
+    "llm": {
+        "apiurl": "http://localhost:11434/api/generate"
+    },
+    "redis": {
+        "addr": "localhost:6379",
+        "password": "",
+        "db": 0
+    },
+    "oauth": {
+        "google": {
+            "clientid": "your-google-client-id",
+            "clientsecret": "your-google-client-secret",
+            "redirecturl": "https://localhost:8080/auth/google/callback",
+            "authurl": "https://accounts.google.com/o/oauth2/auth",
+            "tokenurl": "https://oauth2.googleapis.com/token",
+            "userinfourl": "https://www.googleapis.com/oauth2/v1/userinfo"
+        },
+        "github": {
+            "clientid": "your-github-client-id",
+            "clientsecret": "your-github-client-secret",
+            "redirecturl": "https://localhost:8080/login/github/callback",
+            "authurl": "https://github.com/login/oauth/authorize",
+            "tokenurl": "https://github.com/login/oauth/access_token",
+            "userinfourl": "https://api.github.com/user"
+        }
+    }
+}

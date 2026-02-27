@@ -1,0 +1,167 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <title>Login with Passkey</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <link rel="icon" href="../static/jpg/02.png" type="image/x-icon">
+  <link rel="stylesheet" href="../static/loginPasskeylight.css">
+</head>
+
+<body>
+  <header>
+    <nav>
+      <a href="/"><h2>Elestial</h2><span></span></a>
+      <a href="/signin">Sign In<span></span></a>
+      <a href="/signup">Sign Up<span></span></a>
+      <a href="/about">About<span></span></a>
+    </nav>
+  </header>
+
+  <main class="container">
+    <section class="card">
+      <h1>Sign in</h1>
+      <p class="subtitle">
+        Passwordless authentication using passkeys
+      </p>
+
+      <form onsubmit="event.preventDefault(); loginWithPasskey(email.value);">
+        <label for="email">Email</label>
+        <input
+          id="email"
+          name="email"
+          type="email"
+          required
+          autocomplete="username webauthn"
+          placeholder="you@example.com"
+        />
+
+        <div class="actions">
+          <button type="submit" class="primary">
+            Sign in with Passkey
+          </button>
+
+          <div class="divider">or</div>
+
+          <button type="button" onclick="loginWithPassword()">
+            Use password instead
+          </button>
+        </div>
+      </form>
+
+      <p class="hint">
+        Your device may ask for biometrics or a security key
+      </p>
+    </section>
+  </main>
+  
+  <footer>
+    <p>Other logins: <a href="/signin">Password</a> // <a href="/auth/google">Google</a> // <a href="/login/github/">GitHub</a></p>
+  </footer>
+
+  <script>
+
+function base64urlToBuffer(base64url) {
+      const padding = '='.repeat((4 - base64url.length % 4) % 4);
+      const base64 = (base64url + padding)
+        .replace(/-/g, '+')
+        .replace(/_/g, '/');
+    
+      const binary = atob(base64);
+      const bytes = new Uint8Array(binary.length);
+    
+      for (let i = 0; i < binary.length; i++) {
+        bytes[i] = binary.charCodeAt(i);
+      }
+    
+      return bytes;
+    }
+    
+    function bufferToBase64url(buffer) {
+      return btoa(
+        String.fromCharCode(...new Uint8Array(buffer))
+      )
+        .replace(/\+/g, '-')
+        .replace(/\//g, '_')
+        .replace(/=+$/, '');
+    }
+
+    async function loginWithPasskey(email) {
+      const start = await fetch('/webauthn/login/start', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email })
+      });
+    
+      if (!start.ok) {
+        alert('No passkeys');
+        return;
+      }
+    
+      const options = await start.json();
+    
+      // decode challenge
+      options.publicKey.challenge =
+        base64urlToBuffer(options.publicKey.challenge);
+    
+      // decode allowCredentials ids
+      if (options.publicKey.allowCredentials) {
+        for (const cred of options.publicKey.allowCredentials) {
+          cred.id = base64urlToBuffer(cred.id);
+        }
+      }
+    
+      const assertion = await navigator.credentials.get({
+        publicKey: options.publicKey
+      });
+    
+      if (!assertion) {
+        alert('Cancelled');
+        return;
+      }
+    
+      const credential = {
+        id: assertion.id,
+        rawId: bufferToBase64url(assertion.rawId),
+        type: assertion.type,
+        response: {
+          authenticatorData: bufferToBase64url(
+            assertion.response.authenticatorData
+          ),
+          clientDataJSON: bufferToBase64url(
+            assertion.response.clientDataJSON
+          ),
+          signature: bufferToBase64url(
+            assertion.response.signature
+          ),
+          userHandle: assertion.response.userHandle
+            ? bufferToBase64url(assertion.response.userHandle)
+            : null
+        }
+      };
+    
+      const finish = await fetch('/webauthn/login/finish', {
+        method: 'POST',
+        credentials: 'include',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(credential)
+      });
+    
+      if (finish.ok) {
+        location.href = '/';
+      } else {
+        alert('Login failed');
+      }
+    }
+
+    function loginWithPassword() {
+    window.location.href = "/signin";
+}
+    
+    </script>
+
+  
+    
+</body>
+</html>

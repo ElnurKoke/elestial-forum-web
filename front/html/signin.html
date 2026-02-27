@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SIGN IN</title>
+    <link rel="icon" href="../static/jpg/02.png" type="image/x-icon">
+    <link rel="stylesheet" href="../static/signinlight.css">
+</head>
+<body>
+  <header>
+    <nav>
+      <a href="/"><h2>Elestial</h2><span></span></a>
+      <a href="/signin" class="nav-link--active">Sign In<span></span></a>
+      <a href="/signup">Sign Up<span></span></a>
+      <a href="/about">About<span></span></a>
+    </nav>
+  </header>
+
+  <main>
+    <form method="POST" action="/signin">
+      {{if .}}
+        <h3 class="form-error">{{.Error}}</h3>
+      {{end}}
+
+      <h1>Elestial</h1>
+
+      <label for="username">Имя пользователя:</label>
+      <input
+        type="text"
+        maxlength="36"
+        id="username"
+        name="username"
+        required
+        placeholder="Введите имя пользователя"
+        pattern="[\x20-\x7E]{6,36}"
+        title="Некорректный формат имени"
+        value="{{if .}}{{.Username}}{{end}}"
+      >
+
+      <label for="password">Пароль:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        required
+        placeholder="Введите пароль"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&#])[A-Za-z\d$@$!%*?&#+-=_^]{8,20}$"
+        title="Некорректный формат пароля"
+      >
+
+      <button type="submit">Войти</button>
+
+      <a href="/passkey3fa">Войти через WebAuthn</a>
+      <a href="/signup">Создать аккаунт</a>
+
+      <a href="/auth/google" class="social-link">
+        <img src="../static/jpg/google.png" alt="Войти через Google" title="Войти через Google">
+      </a>
+      <a href="/login/github/" class="social-link">
+        <img src="../static/jpg/github.png" alt="Войти через GitHub" title="Войти через GitHub">
+      </a>
+    </form>
+  </main>
+
+  <footer>
+    <p>Другие входы: <a href="/auth/google">Google</a> // <a href="/login/github/">GitHub</a></p>
+  </footer>
+
+</body>
+</html>

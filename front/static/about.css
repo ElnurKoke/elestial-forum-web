@@ -1,0 +1,142 @@
+body{
+    background-color: black;
+}
+
+.container{
+    color:aliceblue;
+    text-align: left;
+    margin: 0px;
+    max-width: 600px;
+    margin: 20px auto;
+    font-size: 20px;
+    font-family: "Motiva Sans", "Twemoji", "Noto Sans", Helvetica, sans-serif;
+    padding: 20px; /* Добавляем отступы вокруг контейнера */
+    
+}
+
+
+nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    padding-right: 20px;
+    
+    }
+
+nav a {
+    
+    display:inline-block;
+    position: relative;
+    text-decoration: none;
+    color: white;
+    font-size: 26px;
+    font-family: "Motiva Sans", "Twemoji", "Noto Sans", Helvetica, sans-serif;
+    font-weight: 500;
+    color: white; 
+    margin: 0 10px; 
+    transform: translateY(-50px);
+    animation: slideInTop 1s forwards;
+    }
+
+nav a:hover {
+    color: rgb(68, 217, 236);
+    transform: scale(1.1);
+    }
+
+.navigation {
+    position: fixed; /* Фиксируем элемент */
+    top: 0; /* Располагаем его внизу страницы */
+    left: 50%; /* Располагаем его в середине горизонтально */
+    transform: translateX(-50%); /* Центрируем относительно родительского контейнера */
+    padding: 10px; /* Отступы вокруг элемента */
+    z-index: 9999; /* Устанавливаем высокий z-index, чтобы элемент был поверх других */
+    display: flex; /* Используем flexbox для выравнивания ссылок */
+    background-color: black;
+    border-radius: 10px;
+}  
+
+.container h2{
+    text-align: center;
+    margin-top: 200px;
+    transform: translateX(50px);
+    animation: slideInRight 1s forwards;
+}
+
+.container p{
+    transform: translateX(-50px);
+    animation: slideInLeft 1s forwards;
+}
+    
+.navigation a {
+    color: aliceblue;
+    text-decoration: none;
+    font-size: 20px;
+    margin: 0 10px; /* Отступы между ссылками */
+    transform: translateY(-50px);
+    animation: slideInTop 1s forwards;
+}
+
+.navigation a:hover {
+    color: rgb(68, 217, 236);
+    transform: scale(1.105);
+    }
+
+.social-link img {
+    width: 10%; /* растягиваем изображение на всю ширину ссылки */
+    height: auto; /* автоматически вычисляем высоту изображения */
+    vertical-align: middle;
+}
+
+.satoru img {
+    width: 100%; /* растягиваем изображение на всю ширину ссылки */
+    height: auto; /* автоматически вычисляем высоту изображения */
+    border-radius: 15px;
+}
+
+
+.hi {
+    position: relative;
+}
+.hi img {
+    position: absolute;
+    bottom: 0;
+    left: 80%;
+    transform: translateX(-50%);
+    width: 30%;
+    height: auto;
+    
+}
+
+@keyframes slideInLeft {
+    from {
+        opacity: 0;
+        transform: translateX(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInRight {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideInTop {
+    from {
+        opacity: 0;
+        transform: translateY(-50px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}

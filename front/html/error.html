@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>error</title>
+    <link rel="icon" href="../static/jpg/02.png" type="image/x-icon">
+    <link rel="stylesheet" href="../static/error.css">
+</head>
+<body>
+  <button id="backButton" class="error_link">
+    <div class="error_oops">
+      <p>Ooops, something went wrong</p>
+    </div>
+    <div class="error_status">
+      {{.Status}}
+    </div>
+    <div class="error_text">
+      {{.Message}}
+    </div>
+      tap the screen to go back
+</button>
+  <script>
+    document.getElementById("backButton").addEventListener("click", function() {
+            window.history.back();
+        });
+  </script>
+</body>
+</html>

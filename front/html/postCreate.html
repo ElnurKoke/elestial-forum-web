@@ -1,0 +1,96 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Create post</title>
+    <link rel="icon" href="../static/jpg/02.png" type="image/x-icon">
+    <link rel="stylesheet" href="../static/postcreate.css">
+
+</head>
+
+<body>
+
+  <header>
+    <nav>
+        <div class="left">
+            <h1>Create Post</h1>
+        </div> 
+      </nav>
+  </header>
+  <div class="home"> 
+    <a href="/" id="home"><img src="../static/jpg/home.png"></a> 
+</div>
+  <section>
+    <form id="myForm" method="POST" action="/post/create" enctype="multipart/form-data">
+        <label>Title</label>
+        <input type="text" style="font-family: Arial, sans-serif;font-size: 20px; " pattern=".{2,}" 
+        name="title" maxlength="33" placeholder="Enter title" required/>
+
+        <label>Description</label>
+        <textarea  class="comment-textarea" rows="14" name="description" placeholder="Enter description" maxlength="300" required></textarea>
+
+        <div class="categories-container">  
+            {{ range . }}
+            <h3><input type="checkbox" name="category" value="{{ .Name }}"> {{ .Name }}</h3>
+            {{ end }}
+            </div>
+        <label for="image" class="custom-file-upload">
+            <img src="../static/jpg/imageup.png" alt="Upload Image">
+        </label>
+        <input type="file" id="image" name="image" accept="image/*" required>
+        <img id="preview" src="#" alt="Preview" style="display:none; max-width: 150px; height: auto;">
+        <input type="submit" value="CREATE" />
+    </form>
+  </section>
+
+  <footer>
+    
+      <p><div >
+        Allowed categories:
+        {{range .}}
+            <p style="display: inline; margin-right: 0px; border: 1px solid #000; padding: 5px;">{{.Name}}</p>
+        {{end}}
+     
+    </div></p>
+  </footer>
+
+
+    <script>
+    document.getElementById('myForm').addEventListener('submit', function(event) {
+        var checkboxes = document.querySelectorAll('input[type="checkbox"][name="category"]');
+        var isChecked = false;
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                isChecked = true;
+            }
+        });
+        if (!isChecked) {
+            alert('Please select at least one checkbox.');
+            event.preventDefault();
+        }
+    });
+
+    function previewImage(input) {
+        var preview = document.getElementById('preview');
+        if (input.files && input.files[0]) {
+            var reader = new FileReader();
+            reader.onload = function (e) {
+                preview.src = e.target.result;
+                preview.style.display = 'block'; // Показать предпросмотр
+            }
+            reader.readAsDataURL(input.files[0]);
+        }
+    }
+
+    // Привязываем функцию к событию изменения файла input[type=file]
+    document.getElementById('image').addEventListener('change', function() {
+        previewImage(this);
+    });
+    </script> 
+    
+</body>
+
+</html>

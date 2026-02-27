@@ -1,0 +1,6 @@
+CREATE TABLE IF NOT EXISTS likesComment(
+	id INTEGER PRIMARY KEY AUTOINCREMENT,
+	userId INTEGER,
+	commentsId INTEGER,
+	like1 INT
+);

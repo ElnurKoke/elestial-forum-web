@@ -1,0 +1,81 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta http-equiv="X-UA-Compatible" content="IE=edge">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Notification Page</title>
+  <link rel="icon" href="../static/jpg/02.png" type="image/x-icon">
+  <link rel="stylesheet" href="../static/notif.css">
+
+</head>
+
+<body>
+
+  <header>
+    <nav>
+      <a href="/"><h1>{{.User.Username}}</h1><span></span></a>
+      <a href="/post/myLikedPost">My Liked Posts<span></span></a>
+      <a href="/notification" style="color: rgb(68, 217, 236);">Activity<span></span></a>
+      <a href="/post/myPost">My Posts<span></span></a>
+      <a href="/post/create">Create Post<span></span></a>
+      <a href="/logout">Logout<span></span></a>
+    </nav>
+
+  </header>
+
+  <section>
+    {{if .Notifications}}
+    <a href="/notification/?myactions" class="actions_button">My actions</a>
+    {{else}}
+    <a href="/notification/?newnotification" class="actions_button">Notifications</a>   
+    {{end}}
+    {{if .Notifications}}
+      {{range .Notifications}}
+        {{if ne .FromUserId .ToUserId  }}
+          <div class="notification">
+            <img src="../static/useravatars/{{.AvaImage}}" alt="{{.AvaImage}}" class="avatar">
+            <p class="username">{{.FromUserName}}</p>
+            <p class="message">{{.Message}}</p>
+            {{if .CommentId}}
+            <a href="/post/?id={{.PostId}}#comment{{.CommentId}}">view</a>
+            {{else}}
+            <a href="/post/?id={{.PostId}}">view</a>
+            {{end}}
+            <img src="../static/data/{{.PostImage}}" alt="PostImage" class="post-image">
+          </div>
+        {{end}}
+      {{end}}
+    {{end}}
+
+    {{if .Actions}}  
+      {{range .Actions}}
+        {{if ne .FromUserId  $.User.Id}}
+        <div class="notification">
+          <img src="../static/useravatars/{{.AvaImage}}" alt="{{.AvaImage}}" class="avatar">
+          <p class="username">{{.FromUserName}}</p>
+          <p class="message">{{.Message}}</p>
+          {{if .CommentId}}
+          <a href="/post/?id={{.PostId}}#comment{{.CommentId}}">view</a>
+          {{else}}
+          <a href="/post/?id={{.PostId}}">view</a>
+          {{end}}
+          <img src="../static/data/{{.PostImage}}" alt="PostImage" class="post-image">
+        </div>
+        {{end}}
+      {{end}}
+    {{end}}
+
+    <!-- <button class="close-button">Clear All</button> -->
+  </section>
+
+  <footer>
+    <div class="moving-text">
+      <p>Other Applications: <a href="#app1">Everything is</a>, <a href="#app2">getting better</a>, <a href="#app3">don't worry</a></p>
+    </div>
+  </footer>
+
+</body>
+
+</html>

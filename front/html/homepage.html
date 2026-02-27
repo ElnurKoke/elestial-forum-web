@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Home</title>
+  <link rel="stylesheet" href="../static/style.css">
+  <link rel="icon" href="../static/jpg/02.png" type="image/x-icon">
+</head>
+<body>
+  <header>
+    {{if .User.IsAuth}}
+    <nav>
+      <a id="usernameLink" href="/" style="color: rgb(68, 217, 236);"><h1>{{.Username}}</h1><span></span></a>
+            <a href="/post/myLikedPost">My Liked Posts<span></span></a>
+            <a href="/notification">Activity<span></span></a>
+            <a href="/post/myPost">My Posts<span></span></a>
+            <a href="/post/create">Create Post<span></span></a>
+            <a href="/logout">Logout<span></span></a>
+      </nav>
+    {{else}}
+    <nav>
+      <a href="/"><h2>Forum</h2><span></span></a>
+        <a href="/signin">Sign In<span></span></a>
+        <a href="/signup">Sign Up<span></span></a>
+        <a href="/about">About<span></span></a>
+    </nav>
+    {{end}}
+  </header>
+  {{if .User.IsAuth}}
+  <a href="/profile/?id={{.User.Id}}" class="about-link">
+    <img src="../static/useravatars/{{.ImageURL}}" alt="About">
+  </a>
+
+  {{end}}
+
+    <div>
+        <p></p>
+        <p></p>
+    </div>
+
+  <section>
+    <p style="color: rgb(255, 189, 67);">To get to your profile, press and hold your username </p>
+    {{range .Posts}}
+      <div class="container">
+        <a href="/post/?id={{.Id}}" class="cont">
+          <div class="post">
+              <div class="post__header">
+                  <p>{{.Author}}</p>
+                  <h3>_{{.Title}}_</h3>
+              </div>
+              <img src="../static/data/{{ .Image }}" alt="{{ .Image }}">
+              <p class="description">{{.Description}}</p>
+              <div class="category">
+                  <p>Category: </p>         
+                  {{range .Category}}
+                  <span>{{.}}</span>
+                  {{end}}
+              </div>
+          </div>
+        </a>
+      </div>
+    {{end}}
+  </section>
+
+  <footer>
+      <p><a href="/">Categories:</a> {{range .Category}}
+      | <a href="/?category={{.Name}}">{{.Name}} </a> |
+        {{end}}</p>
+  </footer>
+
+  <script>
+    var usernameLink = document.getElementById("usernameLink");
+  
+    var timeout;
+    var longPressDuration = 500; // milliseconds
+  
+    usernameLink.addEventListener("mousedown", function(event) {
+      timeout = setTimeout(function() {
+        window.location.href = "/profile/?id=1";
+      }, longPressDuration);
+    });
+  
+    usernameLink.addEventListener("mouseup", function(event) {
+      clearTimeout(timeout);
+      window.location.href = "/";
+    });
+  
+    usernameLink.addEventListener("mouseout", function(event) {
+      clearTimeout(timeout);
+    });
+  </script>
+  
+</body>
+</html>

@@ -1,0 +1,220 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Profile</title>
+    <link rel="icon" href="../static/jpg/02.png" type="image/x-icon">
+    <link rel="stylesheet" href="../static/profile.css">
+</head>
+
+<body style="--profile-bg: url('../static/jpg/art/{{.User.ImageBack}}');">
+    <header>
+        <nav>
+            <a href="/profile/?id={{.User.Id}}" class="nav-link--active"><h2>Profile</h2><span></span></a>
+            <a href="/" >Forum<span></span></a>
+            <a href="/settings">Settings<span></span></a>
+            <a href="/about">About<span></span></a>
+        </nav>
+    </header>
+    <main>
+    <div class="profile card">
+        <div class="avatar-container "><img class="avatar-img " src="../static/useravatars/{{ .ImageURL }}" alt="{{ .ImageURL }}"></div>
+        {{if .Error}}
+        <h3 class="profile-warning">{{.Error}}</h3>
+        {{end}}
+        <h1>{{.User.Username}}</h1>
+        <p>Name: {{.User.Username}}</p>
+        <p class="role-text">Role: {{.User.Rol}}</p>
+        <p>Email: {{.User.Email}}</p>
+        <p>Bio: {{.User.Bio}}</p>
+        <button id="editButton">Edit Profile</button>
+    </div>
+
+    <div class="editProfile card">
+        <div class="avatar-container "><img class="avatar-img " src="../static/useravatars/{{ .ImageURL }}" alt="{{ .ImageURL }}"></div>
+        <h1>{{.User.Username}}</h1>
+        <form method="POST" action="/profile/?id={{.User.Id}}">
+            <label for="username">New name:</label>
+            <input type="text" pattern="[\x20-\x7E]{6,36}" maxlength="36" id="username" name="username"  placeholder="Enter your new name"
+            value="{{.User.Username}}" required>
+            <input type="hidden" name="form" value="username">
+            <button type="submit" value="profile" >save</button>
+        </form>
+        <p class="role-text">Role: {{.User.Rol}}</p>
+        <form method="POST" action="/profile/?id={{.User.Id}}">
+            <input type="hidden" name="form" value="role">
+            <button type="submit" value="isLevelUp" name="isLevelUp" >Level Up</button>
+        </form>
+        <p>Email: {{.User.Email}}</p>
+        <p>Bio: {{.User.Bio}}</p>
+        <button id="saveButton">Profile</button>
+    </div>
+
+    <div class="posts">
+        {{range .Posts}}
+        <a href="/post/?id={{.Id}}" class="post-link">
+        <div class="post"><img class="avatar-img " src="../static/data/{{.Image}}" alt="Post 1"></div>
+        </a>
+        {{end}}
+    </div>
+{{if ne .User.Rol "user"}}
+<div class="work-space"  id="control">
+
+    <img src="../static/jpg/edit.png" alt="Edit" title="control space" >
+    
+    {{if eq .User.Rol "moderator"}}
+    <div class="askeds">
+        <h3>Admins messages</h3>
+        {{range .RoleMsgs}}
+            <li>
+            <p><span style="color: rgb(255, 0, 119);">{{.FromUserName}}</span>(administrator)->
+                <span style="color: orange;"> Answered: </span> {{.Message}} ->
+                <a style="text-decoration: none; color: orange;" href="/post/?id={{.PostId}}">Post/Comment place</a></p>
+            </li>
+        {{end}}
+
+        <h3>Requests for the role</h3>
+        {{range .Askeds}}
+        <form method="POST" action="/profile/?id={{$.User.Id}}">
+            <p>{{.FromUserName}}- ask to raise his level to -{{.NewRole}}</p>
+            <input type="hidden" name="form" value="roleUp">
+            <button type="submit" value="accept{{.FromUserId}}" name="isLevelUp" >Accept</button>
+            <button type="submit" value="refuse{{.FromUserId}}" name="isLevelUp" >Refuse</button>
+        </form>
+        {{end}}
+
+        <h3>Accept create posts</h3>
+        {{range .WaitPosts}}
+        <form method="POST" action="/profile/?id={{$.User.Id}}">
+            <p>{{.Author}}- ask to permission to create a post: -{{.Title}}</p>
+            <input type="hidden" name="form" value="crPost">
+            <button type="submit" value="accept,{{.Id}}" name="isCrPost" >Accept</button>
+            <button type="submit" value="delete,{{.Id}}" name="isCrPost" >Refuse</button>
+        </form>
+        {{end}}
+    </div>
+    {{end}}
+
+    {{if eq .User.Rol "admin"}}
+    <!-- <a href="/profile/?id={{$.User.Id}}&show=modMsg" >Show moderators messages</a> -->
+    <div class="askeds">
+        <h3>Moderators messages</h3>
+        {{range .RoleMsgs}}
+            <li>
+            {{if .CommentId}}
+            <p><span style="color: rgb(255, 0, 119);">{{.FromUserName}}</span>(moderator)->
+                <span style="color: orange;"> Message:</span> {{.Message}} ->
+                <a style="text-decoration: none; color: orange;" href="/post/?id={{.PostId}}#comment{{.CommentId}}">Comment</a></p>
+            {{else}}
+            <p><span style="color: rgb(255, 0, 119);">{{.FromUserName}}</span>(moderator)->
+                <span style="color: orange;"> Message:</span> {{.Message}} ->
+                <a style="text-decoration: none; color: orange;" href="/post/?id={{.PostId}}">Post</a></p>
+            {{end}}
+            <form action="/profile/?id={{$.User.Id}}" method="post">
+                <input type="hidden" name="form" value="modAns">
+                <input type="hidden" name="post_id" value="{{.PostId}}">
+                <input type="hidden" name="info" value="Moderator:{{.FromUserName}}->Message:{{.Message}}">
+                <input  type="text"  id="text" name="text" maxlength="100" placeholder="Reply to a message..." required>
+                <button type="submit" >reply</button>
+            </form>
+            </li>
+        {{end}}
+
+        <h3>Requests for the role</h3>
+        {{range .Askeds}}
+        <form method="POST" action="/profile/?id={{$.User.Id}}">
+            <p>{{.FromUserName}}- ask to raise his level to -{{.NewRole}}</p>
+            <input type="hidden" name="form" value="roleUp">
+            <button type="submit" value="accept{{.FromUserId}}" name="isLevelUp" >Accept</button>
+            <button type="submit" value="refuse{{.FromUserId}}" name="isLevelUp" >Refuse</button>
+        </form>
+        {{end}}
+    </div>
+    {{end}}
+
+    {{if eq .User.Rol "king"}}
+    <div class="askeds">
+        <h3>All allowed categories</h3>
+        {{range .AllCategory}}
+        <div class="item">
+            <span>{{.Name}}</span>
+            <form method="POST" action="/profile/?id={{$.User.Id}}">
+                <input type="hidden" name="form" value="delCat">
+                <button type="submit" value="{{.Name}}" name="name" class="delete-button">
+                    <img  src="../static/jpg/delete.png" alt="Delete" title="Delete">
+                </button>
+            </form>
+        </div>
+        {{end}}
+        <div class="addcat">
+            <span>New category </span>
+            <form action="/profile/?id={{$.User.Id}}" method="post">
+                <input type="hidden" name="form" value="addCat">
+                <input  type="text"  id="text" name="text" maxlength="100" placeholder="Enter you cat..." required>
+                <button type="submit" >add</button>
+            </form>
+        </div>
+        <h3>All control</h3>
+        {{range .Askeds}}
+        <form method="POST" action="/profile/?id={{$.User.Id}}">
+            <p>{{.FromUserName}}- ask to raise his level to -{{.NewRole}}</p>
+            <input type="hidden" name="form" value="roleUp">
+            <button type="submit" value="accept{{.FromUserId}}" name="isLevelUp" >Accept</button>
+            <button type="submit" value="refuse{{.FromUserId}}" name="isLevelUp" >Refuse</button>
+        </form>
+        {{end}}
+        {{if .AllUsers}}
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>Id:</th>
+                    <th>Photo:</th>
+                    <th>Name:</th>
+                    <th>Email:</th>
+                    <th>Role:</th>
+                </tr>
+            </thead>
+            <tbody>
+                {{range .AllUsers}}
+                <tr>
+                    <th>{{.Id}}</th>
+                    <th><img class="th-avatar-img" src="../static/useravatars/{{ .ImageURL }}" alt="{{ .ImageURL }}"></th>
+                    <th>{{.Username}}</th>
+                    <th>{{.Email}}</th>
+                    <th>{{.Rol}}<form method="POST" action="/profile/?id={{$.User.Id}}">
+                        <input type="hidden" name="form" value="changeRole">
+                        <button type="submit" value="up,{{.Rol}},{{.Id}}" name="isLevel" >Up</button>
+                        <button type="submit" value="down,{{.Rol}},{{.Id}}"  name="isLevel" >Down</button>
+                    </form></th>
+                </tr>
+                {{end}}
+            </tbody>
+        </table>{{end}}
+    </div>
+    {{end}}
+</div>
+{{end}}
+    </main>
+    <script>
+        const editButton = document.getElementById('editButton');
+        const saveButton = document.getElementById('saveButton');
+        const profilePanel = document.querySelector('.profile');
+        const editPanel = document.querySelector('.editProfile');
+
+        if (editButton && saveButton && profilePanel && editPanel) {
+            editButton.addEventListener('click', function() {
+                profilePanel.style.display = 'none';
+                editPanel.style.display = 'block';
+            });
+
+            saveButton.addEventListener('click', function() {
+                editPanel.style.display = 'none';
+                profilePanel.style.display = 'block';
+            });
+        }
+
+    </script>
+</body>
+</html>

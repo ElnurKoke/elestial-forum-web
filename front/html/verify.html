@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Email verification</title>
+	<meta name="viewport" content="width=device-width, initial-scale=1.0">
+	<style>
+		body {
+			font-family: Arial, sans-serif;
+			background: #f4f6f8;
+			display: flex;
+			justify-content: center;
+			align-items: center;
+			height: 100vh;
+		}
+		.card {
+			background: #fff;
+			padding: 24px;
+			border-radius: 8px;
+			width: 100%;
+			max-width: 360px;
+			box-shadow: 0 4px 12px rgba(0,0,0,.1);
+		}
+		h2 {
+			margin-bottom: 12px;
+			text-align: center;
+		}
+		input {
+			width: 100%;
+			padding: 10px;
+			font-size: 16px;
+			margin: 12px 0;
+			box-sizing: border-box;
+		}
+		button {
+			width: 100%;
+			padding: 10px;
+			background: #4CAF50;
+			color: #fff;
+			border: none;
+			border-radius: 4px;
+			font-size: 16px;
+			cursor: pointer;
+		}
+		.error {
+			color: #c62828;
+			text-align: center;
+			margin-top: 10px;
+		}
+	</style>
+</head>
+<body>
+
+<div class="card">
+	<h2>Email verification</h2>
+
+	<form method="POST" action="/verify">
+		<input
+			type="text"
+			name="code"
+			placeholder="Enter 6-digit code"
+			maxlength="6"
+			pattern="[0-9]{6}"
+			required
+		>
+		<button type="submit">Verify</button>
+	</form>
+
+	{{if .}}
+		<div class="error">{{.}}</div>
+	{{end}}
+</div>
+
+</body>
+</html>

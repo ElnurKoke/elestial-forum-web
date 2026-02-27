@@ -1,0 +1,249 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>{{ .Post.Title }}</title>
+	<meta charset="UTF-8">
+	{{ $IsAuth := .User.IsAuth }}
+	{{ $PostID := .Post.Id }}
+	<link rel="icon" href="../static/jpg/02.png" type="image/x-icon">
+	<link rel="stylesheet" href="../static/post.css">
+</head>
+<body>
+	<header>
+		{{if $IsAuth}}
+		<nav>
+			<h1>Post page</h1>
+		</nav>
+		{{else}}
+		<nav>
+		<h1><a href="/">Forum</a></h1>
+		</nav>
+		{{end}}
+	</header>
+	<div class="home"> 
+		<a href="/" id="home"><img src="../static/jpg/home.png"></a> 
+	</div>
+
+{{if eq .Post.Status "waiting"}}				
+	<section>
+		<div class="container">
+		<div class="post">
+			<h2 style="color: rgb(255, 115, 0);">The post is not active yet as it is awaiting permission from moderators</h2>
+			<h1 >{{ .Post.Title }}</h1>
+			<img src="../static/data/{{ .Post.Image }}" alt="{{ .Post.Image }}">
+			<p>{{ .Post.Description }}</p>
+			<p style="font-weight: bold;">Author: {{ .Post.Author }}</p>
+			<form  action="/delete/post/?id={{.Post.Id}}" method="post" onsubmit="return confirmDelete()">
+				<button type="submit" value="isDelete" name="isDelete" >
+					<img class="setting" src="../static/jpg/delete.png" alt="Edit" title="delete post">
+				</button>
+			</form>
+			<p>Likes: {{ .Post.Likes }}, Dislikes: {{ .Post.Dislikes }}</p>
+		</div>
+		</div>
+	</section>
+{{else if eq .Post.Status "delete"}}
+	<section>
+		<div class="container">
+		<div class="post">
+			<h2 style="color: red;">Perhaps your post contains content related to “sex, violence, politics, religion” and thats why it was blocked</h2>
+			<h1 >{{ .Post.Title }}</h1>
+			<img src="../static/data/{{ .Post.Image }}" alt="{{ .Post.Image }}">
+			<p>{{ .Post.Description }}</p>
+			<p style="font-weight: bold;">Author: {{ .Post.Author }}</p>
+			<form  action="/delete/post/?id={{.Post.Id}}" method="post" onsubmit="return confirmDelete()">
+				<button type="submit" value="isDelete" name="isDelete" >
+					<img class="setting" src="../static/jpg/delete.png" alt="Edit" title="delete post">
+				</button>
+			</form>
+			<p>Likes: {{ .Post.Likes }}, Dislikes: {{ .Post.Dislikes }}</p>
+		</div>
+		</div>
+	</section>
+{{else}}
+	
+
+		{{if eq .User.Username .Post.Author}}
+			<div class="edit"> 
+				<button id="toggleButton"><img src="../static/jpg/edit.png" alt="Edit" title="edit post"></button>	
+			</div>
+		{{ end }}
+
+	<div id="hiddenContent">
+		<div class="section1">
+			{{if eq .User.Username .Post.Author}}
+			
+			<div  style="margin-bottom: 20%;">
+			
+			<form method="POST" action="/change/post/?id={{.Post.Id}}" onsubmit="return confirmChange() " id="myForm">
+				<button class="setting" type="submit">
+					<img class="setting" src="../static/jpg/edit.png" alt="Edit" title="save edit" >
+				</button>
+				<h2 style="text-align: center;color: rgb(0, 0, 0);">Editing</h2>
+				<label>Title</label>
+				<input type="text" name="title" maxlength="35" value="{{.Post.Title}}" required />
+		
+				<label>Description:</label>
+				<textarea name="description" rows="13" maxlength="300" required>{{.Post.Description}}</textarea>
+				<label>Category:</label>
+				<div class="categories-container">
+				{{ range $.AllCategory }}
+				<h3><input type="checkbox" name="category" value="{{ .Name }}"> {{ .Name }}</h3>
+				{{ end }}
+			    </div>
+
+				
+			</form>
+			{{ end }}
+		</div>
+		</div>
+	</div>
+
+
+	<section>
+		<div class="container">
+		<div class="post">
+			
+			<h1 >{{ .Post.Title }}</h1>
+			<img src="../static/data/{{ .Image }}" alt="{{ .Image }}">
+			<p>{{ .Post.Description }}</p>
+			<p style="font-weight: bold;">Author: {{ .Post.Author }}</p>
+			{{if or (eq .User.Username .Post.Author) (eq .User.Rol "admin") (eq .User.Rol "king")}}
+			<form  action="/delete/post/?id={{.Post.Id}}" method="post" onsubmit="return confirmDelete()">
+				<button type="submit" value="isDelete" name="isDelete" >
+					<img class="setting" src="../static/jpg/delete.png" alt="Edit" title="delete post">
+				</button>
+			</form>
+			{{ end }}
+			<p>Likes: {{ .Post.Likes }}, Dislikes: {{ .Post.Dislikes }}</p>
+			{{if .User.IsAuth}}
+
+			<form action="/emotion/post/?id={{.Post.Id}}" method="post">
+				<button type="submit" value="like" name="islike">
+					<img class="setting" src="../static/jpg/like.png" alt="Edit"></button>
+				<button type="submit" value="dislike" name="islike">
+					<img class="setting" src="../static/jpg/dislike.png" alt="Edit"></button>
+			</form>
+			{{ end }}
+			
+			{{if eq $.User.Rol "moderator"}}
+				<form action="/profile/?id={{$.User.Id}}" method="post">
+					<input type="hidden" name="form" value="badPost">
+					<input type="hidden" name="post_id" value="{{$PostID}}">
+					<input  type="text"  id="text" name="text" maxlength="100" placeholder="Enter message for admin..." required>
+					<button type="submit" class="publish-button"><img src="../static/jpg/waining.png" alt="Publish Icon"></button>
+				</form>
+			{{end}}
+		</div>
+		<h2 style="text-align: right;">Comments : </h2>
+		<div class="comments">
+		{{ if .Comment }}
+			<ul >
+				{{ range .Comment }}
+					<li id="comment{{ .Id }}">
+					<h3 >{{ .Creator }} </h3>
+					<p style="color: #808080;">{{ .Created_at }}</p>
+					<p style="text-align: right;">{{ .Text }}</p>
+					<p style="color: #808080;">Likes: {{ .Likes }}, Dislikes: {{ .Dislikes }}</p>
+						{{ if $IsAuth}}
+							<form action="/emotion/comment/?id={{.Id}}&postid={{$PostID}}" method="post">
+								<button type="submit" value="like" name="islike">
+									<img class="setting" src="../static/jpg/like.png" alt="Edit"></button>
+								<button type="submit" value="dislike" name="islike">
+									<img class="setting" src="../static/jpg/dislike.png" alt="Edit"></button>
+							</form>
+						{{ end }}
+						{{if or (eq $.User.Username .Creator) (eq $.User.Rol "admin") (eq $.User.Rol "king")}}
+							<form action="/delete/comment/?id={{.Id}}&postid={{$PostID}}" method="post" onsubmit="return confirmDelete()">
+								<button type="submit" value="isDelete" name="isDelete" >
+									<img class="setting" src="../static/jpg/delete.png" alt="Edit" title="delete comment">
+								</button>
+							</form>
+							<a href="/comment/?id={{.Id}}&postid={{$PostID}}" class="setting">
+								<img class="setting" src="../static/jpg/edit.png" alt="Edit" title="edit comment"></a>
+						{{end}}
+					</li>
+					<li>
+						{{if eq $.User.Rol "moderator"}}
+							<form action="/profile/?id={{$.User.Id}}" method="post">
+								<input type="hidden" name="form" value="badComment">
+								<input type="hidden" name="comment_id" value="{{.Id}}">
+								<input type="hidden" name="post_id" value="{{$PostID}}">
+								<input  type="text"  id="text" name="text" maxlength="100" placeholder="Enter message for admin..." required>
+								<button type="submit" class="publish-button"><img src="../static/jpg/waining.png" alt="Publish Icon"></button>
+							</form>
+						{{end}}
+					</li>
+				{{ end }}
+				
+			</ul>
+		{{ else }}
+			<p>No comments yet.</p>
+		{{ end }}
+		</div>
+		
+	</section>
+	
+	
+
+	<footer>
+		<div class="emotion">
+			{{if .User.IsAuth}}
+			
+			<form action="/post/?id={{.Post.Id}}" method="post">
+				<input class="comment_text" type="text"  id="text" name="text" maxlength="100" placeholder="Add a comment..." required>
+				<button type="submit" class="publish-button">
+                    <img src="../static/jpg/icon.png" alt="Publish Icon"></button>
+			</form>
+			{{ end }}
+			
+		</div>
+	</footer>
+{{end}}
+	<script>
+		var fragment = window.location.hash.substring(1);
+		
+		var commentElement = document.getElementById(fragment);
+        if (commentElement) {
+			commentElement.style.backgroundImage = 'url("../static/jpg/point.png")';
+			commentElement.style.backgroundSize = 'contain'; // Масштабирование изображения по размеру элемента
+			commentElement.style.backgroundRepeat = 'no-repeat'; // Отключение повторения изображения
+			commentElement.style.backgroundPosition = 'left top'; // Изображение будет расположено в левом верхнем углу
+        }
+
+		document.getElementById('toggleButton').addEventListener('click', function() {
+		var hiddenContent = document.getElementById('hiddenContent');
+		if (hiddenContent.style.display === 'none') {
+			hiddenContent.style.display = 'block';
+		} else {
+			hiddenContent.style.display = 'none';
+		}
+	    });
+
+
+		function confirmDelete() {
+        	return confirm("Are you really going to delete this creation?");}
+		function confirmChange() {
+        	return confirm("Are you really going to change this creation?");
+        }
+		document.getElementById('myForm').addEventListener('submit', function(event) {
+        
+		var checkboxes = document.querySelectorAll('input[type="checkbox"][name="category"]');
+        var isChecked = false;
+        checkboxes.forEach(function(checkbox) {
+            if (checkbox.checked) {
+                isChecked = true;
+            }
+        });
+        if (!isChecked) {
+            alert('Please select at least one checkbox.');
+            event.preventDefault();
+        }
+        });
+
+
+
+	</script>
+	
+</body>
+</html>

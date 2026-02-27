@@ -1,0 +1,444 @@
+body {
+    margin: 0;
+    padding: 0;
+    font-family: Arial, sans-serif;
+    /* background: url('jpg/oboi.jpg') no-repeat center center fixed;  */
+    background:linear-gradient(to right, #00111d, #000000);
+  }
+  *{
+    padding: 0;
+    margin: 0;
+  }
+  @media (min-width: 3000px) {
+    body {
+      background: url('jpg/oboi.jpg') repeat;
+    }
+  }
+  header {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    /* background-color: rgba(51, 51, 51, 0.5);  */
+    color: white;
+    text-align: left;
+    padding: 10px;
+  }
+  
+  nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+    padding-right: 20px;
+    
+  }
+  nav a {
+    text-decoration: none;
+    color: white;
+  }
+ 
+  
+  nav .left a,
+  nav .center a,
+  nav .right a {
+    font-size: 16px;
+    font-family: "Motiva Sans", "Twemoji", "Noto Sans", Helvetica, sans-serif;
+    font-weight: 500;
+    color: white; 
+    margin: 0 10px; 
+  }
+  
+  nav .left a:hover,
+  nav h1 a:hover,
+  nav .center a:hover {
+    color: rgb(68, 217, 236);
+  }
+
+  nav .right a:hover {
+    color: rgb(214, 60, 49);
+  }
+  
+  footer {
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    width: 100%;
+    background-color: #333;
+    color: white;
+    text-align: center;
+    /* padding: 10px; */
+    transform: translateY(50px);
+    animation: slideInBot 1s forwards;
+  }
+
+  .edit {
+    margin: auto;
+    position: fixed; 
+    top: 3.5%; 
+    left: 50%; 
+    transform: translate(-50%, -50%); 
+    text-align: center; 
+    display: flex; 
+    justify-content: center; 
+    align-items: center; 
+    filter: brightness(0) invert(1);
+  }
+
+#toggleButton {
+    background: none;
+    border: none;
+    cursor: pointer;
+    transition: transform 0.3s ease; 
+}
+
+#toggleButton:hover {
+    transform: scale(1.2); 
+}
+
+.edit img {
+    width: 40px; 
+    height: auto;
+}
+
+  section {
+    font-family: 'Arial', sans-serif;
+    /* background:linear-gradient(to right, #1b3e91, #0f1114); */
+    margin-top: 60px;
+    margin-bottom: 60px;
+    padding: 20px;
+}
+
+.container {
+    max-width: 600px;
+    margin: 20px auto;
+    background-color: #fff;
+    box-shadow: 0 0 10px rgba(255, 255, 255, 0.616);
+    border-radius: 10px;
+    overflow: hidden;
+}
+
+.container img {
+  max-width: 100%;
+  height: auto;
+  border-radius: 5px; 
+  transform: translateX(50px);
+  animation: slideInRight 1s forwards;
+}
+
+.post {
+    border: 1px solid #ccc;
+    padding: 20px;
+    margin-bottom: 20px;
+}
+
+.post h1 {
+    font-size: 24px;
+    margin-bottom: 10px;
+    color: #1da1f2;
+    transform: translateY(-50px);
+    animation: slideInTop 1s forwards;
+}
+
+.post p {
+    margin-bottom: 10px;
+    transform: translateX(-50px);
+    animation: slideInLeft 1s forwards;
+}
+
+/* .emotion {
+    margin-bottom: 20px;
+} */
+
+.comment_text {
+    border-radius: 20px;
+    margin-left: 2%;
+    width: 70%;
+    padding: 8px;
+    margin-bottom: 10px;
+    font-family: Arial, sans-serif; 
+    font-size: 16px; 
+}
+
+
+.comments {
+    text-align: right;
+    border: 1px solid #ccc;
+    padding: 20px;
+    transform: translateX(-50px);
+    animation: slideInLeft 1s forwards;
+}
+
+.comments h2 {
+    font-size: 20px;
+    margin-bottom: 10px;
+}
+
+.comments ul {
+    list-style: none;
+    padding: 0;
+}
+
+.comments li {
+    border-bottom: 1px solid #eee;
+    padding: 10px 0;
+}
+
+.comments li:last-child {
+    border-bottom: none;
+}
+
+.comments h3 {
+    font-size: 16px;
+    margin-bottom: 5px;
+    color: #1da1f2;
+}
+
+.comments p {
+    margin-bottom: 5px;
+}
+
+.comments form {
+    display: inline-block;
+    margin-top: 5px;
+}
+
+/* Optional: Add some styling for buttons */
+button {
+    background-color: transparent;
+    border: none;
+    padding: 8px 12px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+button:hover {
+  background-color: transparent; /* Устанавливаем прозрачный фон при наведении */
+}
+section button:hover img {
+  transform: scale(0.9); /* Увеличение изображения при наведении курсора */
+}
+
+/* button:hover {
+    background-color: #0c7bbf;
+} */
+.publish-button {
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    margin-left: 5px;
+}
+
+.publish-button img {
+    width: 40px; /* Adjust the width as needed */
+    height: 40px; /* Adjust the height as needed */
+    vertical-align: middle;
+}
+
+
+
+
+.section1 {
+  font-family: 'Arial', sans-serif;
+  /* background:linear-gradient(to right, #1b3e91, #0f1114); */
+  margin-top: 60px;
+  padding: 20px;
+}
+
+.section1 form {
+  max-width: 600px;
+  margin: 0 auto;
+  padding: 20px;
+  background-image: url("../static/jpg/seamless.jpg");
+  background-color: #ffffff;
+  border-radius: 8px;
+  box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+}
+
+label {
+  text-align: center;
+  font-weight: bold;
+  display: block;
+  margin-top: 10px;
+  font-size: 1.5em;
+}
+
+.section1 textarea {
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+}
+.section1 form input[type="text"]{
+  width: 100%;
+  padding: 10px;
+  margin-top: 5px;
+  margin-bottom: 10px;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  box-sizing: border-box;
+  font-size: 20px;
+}
+
+textarea {
+  background-color: #ffffff;
+  /* background: url('jpg/02.png') no-repeat right bottom; 
+  background-size: 50px; */
+  resize: vertical;
+  font-family: Arial, sans-serif; 
+  font-size: 18px;
+}
+
+
+.setting {
+  display: inline-block;
+  position: relative; /* Необходимо для позиционирования псевдоэлемента */
+  text-decoration: none;
+  overflow: hidden; /* Обрезаем тень, если она выходит за границы */
+  vertical-align: middle;
+}
+
+.setting:hover img {
+  transform: scale(0.9); /* Увеличение изображения при наведении курсора */
+}
+
+.section1 button{
+  background-color: #acafad00;
+  border: none;
+  padding: 8px 12px;
+  cursor: pointer;
+  margin-left: auto;
+  display: flex;
+  /* justify-content: flex-end;  */
+}
+
+#hiddenContent {
+  display: none;
+}
+
+.categories-container {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr); /* Три столбца с одинаковой шириной */
+  gap: 10px; /* Расстояние между категориями */
+  justify-content: right; /* Центрируем содержимое по горизонтали */
+  text-align: left; /* Выравниваем текст по центру */
+}
+
+.categories-container input[type="checkbox"] {
+  -webkit-appearance: none;
+  -moz-appearance: none;
+  appearance: none;
+  width: 40px;
+  height: 20px;
+  background-color: #ddd;
+  border-radius: 10px;
+  position: relative;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+}
+
+.categories-container input[type="checkbox"]:before {
+  content: '';
+  width: 18px;
+  height: 18px;
+  background-color: #fff;
+  border-radius: 50%;
+  position: absolute;
+  top: 1px;
+  left: 1px;
+  transition: transform 0.3s ease;
+}
+
+.categories-container input[type="checkbox"]:checked {
+  background-color:rgb(68, 217, 236)
+}
+
+.categories-container input[type="checkbox"]:checked:before {
+  transform: translateX(20px);
+}
+
+/* #toggleButton {
+  position: absolute;
+  top: 0;
+  right: 0;
+  padding: 10px;
+  background-color: #ffffff;
+  border: none;
+  cursor: pointer;
+} */
+
+.home {
+  margin: auto;
+  position: fixed; /* фиксированное позиционирование */
+  top: 3.5%; /* расположение сверху на 50% от верхней границы окна браузера */
+  left: 97%; /* расположение слева на 50% от левой границы окна браузера */
+  transform: translate(-50%, -50%); /* сдвигаем элемент назад на 50% его ширины и высоты */
+  text-align: center; /* для выравнивания текста по центру, если это применимо */
+  display: flex; /* для использования flexbox */
+  justify-content: center; /* для выравнивания по горизонтали */
+  align-items: center; /* для выравнивания по вертикали */
+  filter: brightness(0) invert(1);
+}
+
+#home {
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: transform 0.3s ease; /* Добавляем анимацию transform с продолжительностью 0.3 секунды и функцией сглаживания ease */
+}
+
+#home:hover {
+  transform: scale(1.2); /* Увеличиваем масштаб при наведении */
+}
+
+.home img {
+  width: 40px; 
+  height: auto;
+}
+
+@keyframes slideInLeft {
+  from {
+      opacity: 0;
+      transform: translateX(-50px);
+  }
+  to {
+      opacity: 1;
+      transform: translateX(0);
+  }
+}
+
+@keyframes slideInRight {
+  from {
+      opacity: 0;
+      transform: translateX(50px);
+  }
+  to {
+      opacity: 1;
+      transform: translateX(0);
+  }
+}
+
+@keyframes slideInTop {
+  from {
+      opacity: 0;
+      transform: translateY(-50px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}
+
+@keyframes slideInBot {
+  from {
+      opacity: 0;
+      transform: translateY(50px);
+  }
+  to {
+      opacity: 1;
+      transform: translateY(0);
+  }
+}

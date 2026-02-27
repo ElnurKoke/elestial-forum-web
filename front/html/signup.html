@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" href="../static/jpg/02.png" type="image/x-icon">
+    <link rel="stylesheet" href="../static/signup.css">
+    <title>Register</title>
+</head>
+<body>        
+
+  <header>
+    <nav>
+      <a href="/"><h2>Elestial</h2><span></span></a>
+      <a href="/signin" >Sign In<span></span></a>
+      <a href="/signup" style="color: rgb(68, 217, 236);">Sign Up<span></span></a>
+      <a href="/about">About<span></span></a>
+    </nav>
+  </header>
+
+  <main>
+    <form method="POST" action="/signup">
+  
+      {{if .}}
+        <h3 style="color: rgb(218, 0, 0);">{{.Error}}</h3>
+      {{end}}
+  
+      <h1>Elestial</h1>
+  
+      <label for="username">Имя пользователя:</label>
+      <input
+        type="text"
+        id="username"
+        name="username"
+        maxlength="36"
+        required
+        placeholder="Enter your name"
+        pattern="[\x20-\x7E]{6,36}"
+        value="{{if .}}{{.Username}}{{end}}"
+      >
+  
+      <label for="email">Email:</label>
+      <input
+        type="email"
+        id="email"
+        name="email"
+        required
+        placeholder="Example@email.com"
+        pattern="^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,}$"
+        title="Your email address must be in the format user@example.com"
+        value="{{if .}}{{.Email}}{{end}}"
+      >
+  
+      <label for="password">Пароль:</label>
+      <input
+        type="password"
+        id="password"
+        name="password"
+        required
+        placeholder="Enter password"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&#])[A-Za-z\d$@$!%*?&#+-=_^]{8,20}$"
+        title="Password must be 8–20 chars, include upper, lower, digit and special symbol"
+      >
+  
+      <label for="password1">Повторите пароль:</label>
+      <input
+        type="password"
+        id="password1"
+        name="password1"
+        required
+        placeholder="Repeat password"
+        pattern="^(?=.*[a-z])(?=.*[A-Z])(?=.*\d)(?=.*[$@$!%*?&#])[A-Za-z\d$@$!%*?&#+-=_^]{8,20}$"
+        title="Passwords must match"
+      >
+  
+      <button type="submit">Зарегистрироваться</button>
+      <a href="/signin">У меня уже есть аккаунт</a>
+  
+    </form>
+  </main>
+  
+  <footer>
+      <p>Other Applications: <a href="#app1">Are</a>, <a href="#app2">You</a>, <a href="#app3">Tired?</a></p>
+  </footer>
+
+</body>
+</html>

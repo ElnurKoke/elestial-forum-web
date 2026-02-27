@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html>
+<head>
+	<title>Edit comment</title>
+	<meta charset="UTF-8">
+	<link rel="icon" href="../static/jpg/02.png" type="image/x-icon">
+	<link rel="stylesheet" href="../static/post.css">
+</head>
+<body>
+	<header>
+		{{if .IsAuth}}
+		<nav>
+			<div class="left">
+				<h1>Comment: {{.Text}}</h1>
+			</div> 
+			<div class="right">
+				<a href="/post/?id={{.PostId}}" >Post</a>
+			</div>
+		</nav>
+		{{else}}
+		<nav>
+		<h1><a href="/">Forum</a></h1>
+			<div class="left">
+				<a href="/signin">Sign In</a>
+			</div> 
+			<div class="center">
+				<a href="/signup">Sign Up</a>
+			</div>
+			<div class="right">
+				<a href="#contact" title="Elnur Bauyrzan:
+				Tel num: +77*****5261
+				Tg: @El_n_uR
+				Nick: ebauyrzh
+				">Contact</a>
+			</div>
+		</nav>
+		{{end}}
+	</header>
+	<div class="section1"></div>
+
+	<div class="section1">
+		<div  style="margin-bottom: 20%;">
+		
+		<form method="POST" action="/comment/?id={{.Id}}">	
+			<label>Edit:</label>
+			<button class="setting" type="submit">
+				<img class="setting" src="../static/jpg/edit.png" alt="Edit">
+			</button>
+			<input class="comment_text" type="text"  id="text" name="text" maxlength="100" value="{{.Text}}" required />
+			<p style="color: #808080;">Creator: {{.Creator}}</p>
+			<p style="color: #808080;">Likes: {{ .Likes }}, Dislikes: {{ .Dislikes }}</p>
+		</form>
+	</div>
+	</div>
+
+	<footer>
+	</footer>
+	
+</body>
+</html>

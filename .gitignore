@@ -1,0 +1,47 @@
+*.db
+*.key
+*.crt
+*.pem
+*.p12
+*.pfx
+*.jks
+*.kdbx
+config.json
+
+# Env / secrets
+.env
+.env.*
+!.env.example
+!.env.*.example
+secrets.*
+*.secret
+
+# Go caches and test artifacts
+.gocache/
+bin/
+dist/
+coverage.out
+*.coverprofile
+*.test
+
+# Logs / temp files
+*.log
+*.tmp
+*.temp
+tmp/
+temp/
+
+# OS / editor
+.DS_Store
+.idea/
+.vscode/
+*.swp
+*.swo
+
+front/static/data/*.jpeg
+front/static/data/*.jpg
+front/static/data/*.png
+front/static/data/*.gif
+!front/static/data/z-roles.png
+!front/static/data/z-block.png
+!front/static/data/z-test.png
